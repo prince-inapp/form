@@ -1,0 +1,42 @@
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+</head>
+<body onload="loadData()">
+    <form>
+        <label for="name">Name</label>
+        <input id="input-name" type="text" name="name" placeholder="Name">
+        <br><br>
+        <label for="email">Email</label>
+        <input id="input-email" type="text" name="email" placeholder="Email">
+        <br><br>
+        <label for="phone">Phone</label>
+        <input id="input-phone" type="text" name="phone" placeholder="Phone">
+        <br><br>
+        <label for="address">Address</label>
+        <div class="form-select-address" name="address">
+            <label for="country">Country</label>
+            <select id="select-country" onclick="loadStates()" name="country">
+                <option disabled selected>Select a country</option>
+            </select>
+            &nbsp;
+            <label for="form-select-state" >State</label>
+            <select id="select-state" onchange="loadCities()">
+
+            </select>
+            &nbsp;
+            <label for="form-select-city" >City</label>
+            <select id="select-city" name="form-select-city">
+
+
+            </select>
+        </div>
+    </form>
+    
+</body>
+<script src="script.js" defer></script>
+</html>
