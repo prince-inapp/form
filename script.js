@@ -16,11 +16,21 @@ async function loadData() {
 
 }
 
+// function clearAll(){
+//   let options = document.getElementById('select-state');
+//   while(option.hasChildNodes()){
+//
+//   }
+// }
+
 async function loadStates(){
 
     const country = document.getElementById('select-country').value;
     console.log(country)
-    
+    console.log(document.getElementById("select-state"));
+    if(document.getElementById("select-state") != null){
+      document.getElementById("select-state").options.length=0;
+    }
     const stateResponse = await fetch('https://api.countrystatecity.in/v1/countries/' + country + '/states', requestOptions);
     const stateData = await stateResponse.json();
     console.log(stateData);
@@ -31,13 +41,15 @@ async function loadStates(){
 async function loadCities(){
     const country = document.getElementById('select-country').value;
     const state = document.getElementById('select-state').value;
-    document.getElementById("select-state").options.length=0;
+    if(document.getElementById("select-city") != null){
+      document.getElementById("select-city").options.length=0;
+    }
     const cityResponse = await fetch(
         'https://api.countrystatecity.in/v1/countries/'+country+'/states/'+state+'/cities', requestOptions);
     const cityData = await cityResponse.json();
     console.log(cityData)
     loadOptions(cityData, 'select-city')
-    
+
 }
 
 function loadOptions(data, id){
@@ -50,5 +62,3 @@ function loadOptions(data, id){
         selectCountry.appendChild(opt);
     });
 }
-
-
