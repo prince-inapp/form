@@ -7,6 +7,8 @@ var requestOptions = {
    redirect: 'follow',
 };
 
+hide('state-div');
+hide('city-div');
 // api function which returns the data
 async function loadData() {
     const response = await fetch('https://api.countrystatecity.in/v1/countries/', requestOptions);
@@ -27,15 +29,33 @@ async function loadStates(){
 
     const country = document.getElementById('select-country').value;
     console.log(country)
-    console.log(document.getElementById("select-state"));
     if(document.getElementById("select-state") != null){
       document.getElementById("select-state").options.length=0;
     }
     const stateResponse = await fetch('https://api.countrystatecity.in/v1/countries/' + country + '/states', requestOptions);
     const stateData = await stateResponse.json();
+    console.log("state data : ");
     console.log(stateData);
-    loadOptions(stateData, 'select-state');
-    loadCities();
+    
+    try {
+        loadOptions(stateData, 'select-state');
+        loadCities();
+        show('state-div');
+        if(stateData.length === 0){
+            console.log('inside if ');
+            document.getElementById('state-div').hidden = true;
+            hide('state-div');
+            console.log('state-div hidden');
+            hide('city-div');
+        }
+        
+    } catch (error) {
+        console.log("no state");
+        hide('state-div');
+        hide('city-div');
+        
+    }
+    
 }
 
 async function loadCities(){
@@ -45,10 +65,21 @@ async function loadCities(){
       document.getElementById("select-city").options.length=0;
     }
     const cityResponse = await fetch(
-        'https://api.countrystatecity.in/v1/countries/'+country+'/states/'+state+'/cities', requestOptions);
+        'https://api.countrystatecity.in/v1/countries/'+country+'/states/'+state+'/cities', requestOptions).catch((e)=>{
+            console.log('no city api');
+        })
     const cityData = await cityResponse.json();
-    console.log(cityData)
-    loadOptions(cityData, 'select-city')
+    //console.log(cityData);
+    try{
+        loadOptions(cityData, 'select-city');
+        show('city-div');
+    }
+    catch{
+        console.log("no city");
+        hide('city-div');
+    }
+    
+    
 
 }
 
@@ -61,4 +92,14 @@ function loadOptions(data, id){
         opt.innerText = item.name;
         selectCountry.appendChild(opt);
     });
+}
+
+function hide(id){
+    let options = document.getElementById(id);
+    options.hidden = true;
+}
+
+function show(id){
+    let options = document.getElementById(id);
+    options.hidden = false;
 }
